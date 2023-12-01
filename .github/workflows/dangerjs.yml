@@ -1,4 +1,4 @@
-name: DangerJS Check
+name: DangerJS Pull Request linter
 on:
   pull_request_target:
     types: [opened, edited, reopened, synchronize]
@@ -26,7 +26,7 @@ jobs:
         # max-commits-enabled: 'false'
         max-commits-info: 3
         max-commits-warn: 6
-        instructions-contributions-guide-file: 'CONTRIBUTING.md'
+        instructions-contributions-file: 'CONTRIBUTING.md'
         instructions-cla-link: 'https://cla-assistant.io/espressif/test'
-        instructions-is-gitlab-mirror: 'true'
+        instructions-gitlab-mirror: 'true'
 
