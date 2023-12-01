@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out PR head
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
 
@@ -29,3 +29,4 @@ jobs:
         instructions-contributions-guide-file: 'CONTRIBUTING.md'
         instructions-cla-link: 'https://cla-assistant.io/espressif/test'
         instructions-is-gitlab-mirror: 'true'
+
