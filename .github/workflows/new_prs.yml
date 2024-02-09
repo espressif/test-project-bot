@@ -4,7 +4,7 @@ name: Sync remain PRs to Jira
 # Note that, PRs can also get synced when new PR comment is created
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0/5 * * * *"
 
 jobs:
   sync_prs_to_jira:
@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Sync PRs to Jira project
         # uses: espressif/github-actions/sync_issues_to_jira@fix/jira-sync-pr
-        uses: espressif/sync-jira-actions@refactor/single-repo
+        uses: espressif/sync-jira-actions@v1
         with:
           cron_job: true
         env:
