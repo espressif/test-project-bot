@@ -10,7 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Sync GitHub issues to Jira project
-        uses: espressif/sync-jira-actions@refactor/single-repo
+        # uses: espressif/sync-jira-actions@v1
+        uses: espressif/github-actions/sync_issues_to_jira@deprecate/jira-sync-action
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JIRA_PASS: ${{ secrets.JIRA_PASS }}
