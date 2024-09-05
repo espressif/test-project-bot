@@ -1,0 +1,35 @@
+---
+name: Sync to Jira (combined)
+
+on:
+  issues: { types: [opened] }
+  issue_comment: { types: [created, edited, deleted] }
+  schedule: [{ cron: '0 * * * *' }]
+
+concurrency:
+  group: jira-issues
+
+jobs:
+  sync_to_jira:
+    name: >
+      Sync to Jira - 
+      ${{ github.event_name == 'issue_comment' && 'Issue Comments' || 
+          github.event_name == 'schedule' && 'New Pull Requests' || 
+          github.event_name == 'issues' && 'New Issues' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR head
+        uses: actions/checkout@v4
+
+      - name: Sync to Jira
+        uses: espressif/sync-jira-actions@v1
+        with:
+          cron_job: ${{ github.event_name == 'schedule' }} # Pass true if it's a scheduled event
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JIRA_PASS: ${{ secrets.JIRA_PASS }}
+          JIRA_URL: ${{ secrets.JIRA_URL }}
+          JIRA_USER: ${{ secrets.JIRA_USER }}
+          JIRA_PROJECT: IDFSYNTEST
+          JIRA_COMPONENT: GitHub
+          JIRA_ISSUE_TYPE: Task
