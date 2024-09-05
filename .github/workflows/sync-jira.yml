@@ -6,9 +6,6 @@ on:
   issue_comment: { types: [created, edited, deleted] }
   schedule: [{ cron: '0 * * * *' }]
 
-concurrency:
-  group: jira-issues
-
 jobs:
   sync_to_jira:
     name: >
@@ -21,10 +18,14 @@ jobs:
       - name: Check out PR head
         uses: actions/checkout@v4
 
+      - name: Debug Event Name
+        run: |
+          echo "Event Name: ${{ github.event_name }}"
+
       - name: Sync to Jira
         uses: espressif/sync-jira-actions@v1
-        with:
-          cron_job: ${{ github.event_name == 'schedule' }} # Pass true if it's a scheduled event
+        # with:
+        #   cron_job: ${{ github.event_name == 'schedule' && 'true' || 'false' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JIRA_PASS: ${{ secrets.JIRA_PASS }}
@@ -33,3 +34,4 @@ jobs:
           JIRA_PROJECT: IDFSYNTEST
           JIRA_COMPONENT: GitHub
           JIRA_ISSUE_TYPE: Task
+          INPUT_CRON_JOB: ${{ github.event_name == 'schedule' && 'true' || '' }}  # this is kind of a hack; code of the action needs to be modified
