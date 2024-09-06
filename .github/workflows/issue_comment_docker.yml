@@ -1,4 +1,4 @@
-name: Sync issue comments to JIRA (legacy caller)
+name: Sync issue comments to JIRA (Docker; current v1)
 
 # This workflow will be triggered when new issue comment is created (including PR comments)
 on: issue_comment
@@ -10,8 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Sync issue comments to JIRA
-        # uses: espressif/sync-jira-actions@v1
-        uses: espressif/sync-jira-actions@change/composite-action
+        uses: espressif/sync-jira-actions@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JIRA_PASS: ${{ secrets.JIRA_PASS }}
