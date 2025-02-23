@@ -1,0 +1,29 @@
+runners:
+  # Linux x64 bare
+  - BrnoUBU0004
+
+  # MacOS ARM64
+  - BrnoMAC0002
+
+  # Linux x64 virtual machine
+  # - BrnoVM0101 # reinstall, new SD card probably needed
+  - BrnoVM0104
+  - BrnoVM0105
+  - BrnoVM0106
+  - BrnoVM0107
+
+  # Raspberry PI
+  # - BrnoRPIG001
+  - BrnoRPIG002
+  - BrnoRPIG003
+  - BrnoRPIG004
+  - BrnoRPIG005
+  - BrnoRPIG006
+  - BrnoRPIG007
+  - BrnoRPIG008
+  - BrnoRPIG009
+  - BrnoRPIG010
+  - BrnoRPIG011
+  - BrnoRPIG012
+  - BrnoRPIG013
+  - BrnoRPIG014

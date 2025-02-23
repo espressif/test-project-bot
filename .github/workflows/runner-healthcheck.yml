@@ -1,0 +1,53 @@
+name: ⛑️ Self-hosted Runners Health Check
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  get-runner-list:
+    name: Get Runner List
+    runs-on: ubuntu-latest
+    outputs:
+      runners: ${{ steps.extract.outputs.runners }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read runner list from file
+        id: extract
+        run: |-
+          runners=$(grep '^\s*-' runners.yml | sed -E 's/^\s*-\s*([^#]+).*/\1/' | sed 's/\s*$//' | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "Runners: $runners"
+          echo "runners=$runners" >> $GITHUB_OUTPUT
+
+  health-check:
+    name: Runner Health Check
+    needs: get-runner-list
+    strategy:
+      matrix:
+        runner: ${{ fromJson(needs.get-runner-list.outputs.runners) }}
+    timeout-minutes: 5 # Adjust as needed; if a runner is missing, the job will time out.
+    runs-on:
+      - self-hosted
+      - ${{ matrix.runner }} # Each self-hosted runner should have an extra label that exactly matches its name.
+    steps:
+      - name: Confirm health
+        run: |
+          echo "${{ matrix.runner }} : I'm alive ... need input!"
+
+  notify-failure:
+    name: Notify Mattermost on Failure
+    needs: health-check
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send notification to Mattermost
+        uses: mattermost/action-mattermost-notify@master
+        with:
+          TEXT: |
+            Self-hosted Runner Health Check has failed.
+            Please investigate the issue.
+            [Job: ${{ github.job }} | Run ID: ${{ github.run_id }}]
+          MATTERMOST_WEBHOOK_URL: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
