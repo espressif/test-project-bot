@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run synchronization to Jira
-        uses: espressif/sync-jira-actions@v1
+        uses: espressif/sync-jira-actions@feat/add-webhook
         with:
           cron_job: ${{ github.event_name == 'schedule' && 'true' || '' }}
         env:
@@ -48,3 +48,4 @@ jobs:
           JIRA_COMPONENT: ${{ vars.JIRA_COMPONENT || 'GitHub' }}
           JIRA_URL: ${{ secrets.JIRA_URL }}
           JIRA_USER: ${{ secrets.JIRA_USER }}
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
